@@ -1,0 +1,306 @@
+{% extends 'main/base.html'%}
+{% block count %}
+{% with count=cart_count %}
+{{ block.super }}
+{% endwith%}
+{% endblock count%}
+{% block body %}
+<div class="site-wrap">
+   <div class="bg-light py-3">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 mb-0"><a href="../">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Cart</strong></div>
+         </div>
+      </div>
+   </div>
+   <div class="site-section">
+      <div class="container">
+         <div class="row mb-5">
+            <form class="col-md-12" method="post">
+               <div class="site-blocks-table">
+                  <table class="table table-bordered">
+                     <script>
+                        var a=0;
+                        
+                          function Initialise(id)
+                              { //window.alert("hello");
+                                
+                                cart_id=id.replace(/\D/g,'');
+                                totalprice_id="total_id"+cart_id;
+                                  
+                                
+                                
+                                  
+                                  a=a+parseInt(document.getElementById(totalprice_id).textContent);
+                                  
+                                  document.getElementById("Subtotal").textContent = a;
+                                  document.getElementById("Stotal").textContent = a;
+                                  //window.alert(a);
+                        
+                              }
+                        
+                          /*function returntotal()
+                          {
+                            window.alert("hello")
+                          d
+                          }*/
+                          
+                     </script>
+                     
+                        {% if all_items %}
+                                                                                      <thead>
+                                                                                      <tr>
+                           <th class="product-thumbnail">Image</th>
+                           <th class="product-name">Product</th>
+                           <th class="product-price">Price</th>
+                           <th class="product-quantity">Quantity</th>
+                           <th class="product-total">Total</th>
+                           <th class="product-remove">Remove</th>
+                        </tr>
+                                                                                      </thead>
+                                                                                      <tbody>
+                        <tr>
+                        {% for prod in all_items %}
+                        
+                           {% if prod.product_id.units_in_stock == 0 %}
+                           <td class="product-thumbnail">
+                              <img src={{prod.product_id.picture1.url}} alt="Image" class="img-fluid" id="im_id{{prod.cart_id}}" onload="Initialise(id)">
+                           </td>
+                           <td class="product-name">
+                              <h2 class="h5 text-black">{{prod.product_id.product_description}}</h2>
+                              <br>
+                              <p style="color: red"><strong>This product is Out of Stock</strong></p>
+                           </td>
+                           <td><a id="price_id{{prod.cart_id}}">{{prod.product_id.mrp}}</a></td>
+                           <td>
+                              <div class="input-group mb-3" style="max-width: 120px;">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-outline-primary js-btn-minus" type="button" disabled="true" onclick="SubtractValue(id)" id="min_id{{prod.cart_id}}">&minus;</button>
+                                 </div>
+                                 <input type="text" class="form-control text-center" value={{prod.quantity}} placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="quantity_id{{prod.cart_id}}">
+                                 <div class="input-group-append">
+                                    <button class="btn btn-outline-primary js-btn-plus" type="button" onclick="AddValue(id)" id="plus_id{{prod.cart_id}}" disabled="true">&plus;</button>
+                                 </div>
+                              </div>
+                                                                                                     </td>
+                              {% elif prod.product_id.units_in_stock < prod.quantity %}
+                           <td class="product-thumbnail">
+                              <img src={{prod.product_id.picture1.url}} alt="Image" class="img-fluid" id="im_id{{prod.cart_id}}">
+                           </td>
+                           <td class="product-name">
+                              <h2 class="h5 text-black">{{prod.product_id.product_description}}</h2>
+                              <br>
+                              <p style="color: blue"><strong>Only {{prod.product_id.units_in_stock}} quantity available in Stock</strong></p>
+                           </td>
+                           <td><a id="price_id{{prod.cart_id}}">{{prod.product_id.mrp}}</a></td>
+                           <td>
+                              <div class="input-group mb-3" style="max-width: 120px;">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-outline-primary js-btn-minus" type="button" onclick="SubtractValue(id)" id="min_id{{prod.cart_id}}">&minus;</button>
+                                 </div>
+                                 <input type="text" class="form-control text-center" value={{prod.product_id.units_in_stock}} placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="quantity_id{{prod.cart_id}}" onload="upd_cart(id)">
+                                 <div class="input-group-append" >
+                                    <button class="btn btn-outline-primary js-btn-plus" type="button" onclick="AddValue(id)" id="plus_id{{prod.cart_id}}">&plus;</button>
+                                 </div>
+                             </div>
+                                                                                                     </td>
+                              {% else %}
+                           <td class="product-thumbnail">
+                              <img src={{prod.product_id.picture1.url}} alt="Image" class="img-fluid" id="im_id{{prod.cart_id}}" onload="Initialise(id)">
+                           </td>
+                           <td class="product-name">
+                              <h2 class="h5 text-black">{{prod.product_id.product_description}}</h2>
+                           </td>
+                           <td><a id="price_id{{prod.cart_id}}">{{prod.product_id.mrp}}</a></td>
+                           <td>
+                              <div class="input-group mb-3" style="max-width: 120px;">
+                                 <div class="input-group-prepend">
+                                    <button class="btn btn-outline-primary js-btn-minus" type="button" onclick="SubtractValue(id)" id="min_id{{prod.cart_id}}">&minus;</button>
+                                 </div>
+                                 <input type="text" class="form-control text-center" value={{prod.quantity}} placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="quantity_id{{prod.cart_id}}">
+                                 <div class="input-group-append">
+                                    <button class="btn btn-outline-primary js-btn-plus" type="button" onclick="AddValue(id)" id="plus_id{{prod.cart_id}}">&plus;</button>
+                                 </div>
+                              </div>
+                                                                                                       </td>
+                              {% endif %}
+                           
+                           <td>
+                              <a id="total_id{{prod.cart_id}}">{{prod.price}}</a>
+                           </td>
+                           <td><button class="btn btn-primary height-auto btn-sm" type="button" id="rem_id{{prod.cart_id}}" onclick="onRemove(id)">X</button></td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+                  <p id="message"></p>
+               </div>
+            </form>
+         </div>
+         <div class="row">
+            <div class="col-md-6">
+               <div class="row mb-5">
+                  <div class="col-md-6">
+                     <a class="btn btn-outline-primary btn-sm btn-block" href="../">Continue Shopping</a>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12">
+                     <label class="text-black h4" for="coupon">Coupon</label>
+                     <p>Enter your coupon code if you have one.</p>
+                  </div>
+                  <div class="col-md-8 mb-3 mb-md-0">
+                     <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
+                  </div>
+                  <div class="col-md-4">
+                     <button class="btn btn-primary btn-sm px-4">Apply Coupon</button>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-6 pl-5">
+               <div class="row justify-content-end">
+                  <div class="col-md-7">
+                     <div class="row">
+                        <div class="col-md-12 text-right border-bottom mb-5">
+                           <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                        </div>
+                     </div>
+                     <div class="row mb-3">
+                        <div class="col-md-6">
+                           <span class="text-black">Subtotal</span>
+                        </div>
+                        <div class="col-md-6 text-right">
+                           <strong class="text-black" id="h">&#x20b9</strong>
+                           <strong class="text-black" id="Subtotal">0</strong>
+                        </div>
+                     </div>
+                     <div class="row mb-5">
+                        <div class="col-md-6">
+                           <span class="text-black">Total</span>
+                        </div>
+                        <div class="col-md-6 text-right" id="total_price">
+                           <strong class="text-black" id="h">&#x20b9</strong>
+                           <strong class="text-black" id="Stotal">0</strong>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12">
+                           <a class="btn btn-primary btn-lg btn-block" href="../checkout/">Proceed To Checkout</a>
+                        </div>
+                     </div>
+                     {% else %}
+                     {% csrf_token %}
+                     <p>Your Cart is empty</p>
+                     <div class="col-md-6">
+                        <a class="btn btn-primary btn-lg btn-block" href="../shop" >Continue Shopping</a>
+                     </div>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/aos.js"></script>
+<script src="js/main.js"></script>
+<script>
+   function onRemove(id){
+           cart_id=id.replace(/\D/g,'');
+           //window.alert(cart_id)
+           a=""
+           a=cart_id+""
+           location.href=a
+           // /cart/1
+       }
+   function AddValue(id)
+       { 
+         //units_in_stock = {{prod.product_id.units_in_stock}};
+         //window.alert("hello");
+         cart_id=id.replace(/\D/g,''); //7
+         //window.alert(cart_id);
+         quant_id="quantity_id"+cart_id; //7
+         
+         totalprice_id="total_id"+cart_id;
+         
+         pri_id="price_id"+cart_id;
+         //window.alert(pri_id+totalprice_id+quant_id);
+         
+         prev_qant = parseInt(document.getElementById(quant_id).value);
+         
+   
+         document.getElementById(quant_id).value=parseInt(document.getElementById(quant_id).value)+1;
+   
+           
+   
+         document.getElementById(quant_id).innerHTML=document.getElementById(quant_id).value;
+         
+        valu= parseInt(document.getElementById(quant_id).value) * parseFloat(document.getElementById(pri_id).textContent);
+         document.getElementById(totalprice_id).textContent = valu;
+         //window.alert(valu);
+         new_valu = parseInt((document.getElementById(quant_id).value)-prev_qant) * parseFloat(document.getElementById(pri_id).textContent);
+         
+         document.getElementById("Stotal").textContent = parseInt(document.getElementById("Stotal").textContent) + new_valu;
+         document.getElementById("Subtotal").textContent = parseInt(document.getElementById("Subtotal").textContent) + new_valu;
+   
+           loc="";
+           loc=cart_id+"/"+document.getElementById(quant_id).value;
+           location.href=loc;
+   
+   
+   
+       
+     }
+   function SubtractValue(id)
+     { cart_id=id.replace(/\D/g,'');
+       quant_id="quantity_id"+cart_id;
+       totalprice_id="total_id"+cart_id;
+       pri_id="price_id"+cart_id;
+       prev_qant = parseInt(document.getElementById(quant_id).value);
+       if(parseInt(document.getElementById(quant_id).value)>0)
+       document.getElementById(quant_id).value=parseInt(document.getElementById(quant_id).value)-1;
+       else
+         document.getElementById("message").innerHTML="Cant be less than 0"
+       document.getElementById(quant_id).innerHTML=document.getElementById(quant_id).value;
+       valu= parseInt(document.getElementById(quant_id).value) * parseFloat(document.getElementById(pri_id).textContent);
+       document.getElementById(totalprice_id).textContent = valu;
+   
+       new_valu = parseInt((document.getElementById(quant_id).value)-prev_qant) * parseFloat(document.getElementById(pri_id).textContent);
+         
+         document.getElementById("Stotal").textContent = parseInt(document.getElementById("Stotal").textContent) + new_valu;
+         document.getElementById("Subtotal").textContent = parseInt(document.getElementById("Subtotal").textContent) + new_valu;
+   
+           loc="";
+           loc=cart_id+"/"+document.getElementById(quant_id).value;
+           location.href=loc;
+     }
+     
+     function upd_cart(id){
+       window.alert("12");
+         cart_id=id.replace(/\D/g,''); //7
+         //window.alert(cart_id);
+         quant_id="quantity_id"+cart_id; //7
+         loc="";
+          // loc=cart_id+"/"+document.getElementById(quant_id).value;
+           window.alert(loc);
+           location.href=loc;
+   
+     }
+     
+     
+</script>
+{%endblock%}
+
+
+
+ 
+
+ 
+
+

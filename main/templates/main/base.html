@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head onload="Init()">
+    <title>GullyKaArt</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"> 
+    <link rel="stylesheet" href="/static/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/magnific-popup.css">
+    <link rel="stylesheet" href="/static/css/jquery-ui.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/static/css/style_image.css">
+    <link rel="stylesheet" href="/static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/css/aos.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+  <!--  <link rel="stylesheet" href="/static/css/materialize.css"> -->
+    
+    
+    <style>
+
+.blue {
+  background-color: #003F72 !important; }
+
+.green {
+  background-color: #4CAF50 !important; }
+  .orange {
+  background-color: #ff9800 !important; }
+
+.red {
+  background-color: #F44336 !important; }
+
+ .toast,  {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2); }
+
+#toast-container {
+  display: block;
+  position: fixed;
+  z-index: 10000; }
+  @media only screen and (max-width: 600px) {
+    #toast-container {
+      min-width: 100%;
+      bottom: 0%; } }
+  @media only screen and (min-width: 601px) and (max-width: 992px) {
+    #toast-container {
+      left: 5%;
+      bottom: 7%;
+      max-width: 90%; } }
+  @media only screen and (min-width: 993px) {
+    #toast-container {
+      top: 10%;
+      right: 7%;
+      max-width: 86%; } }
+
+
+.toast {
+  border-radius: 2px;
+  top: 35px;
+  width: auto;
+  margin-top: 10px;
+  position: relative;
+  max-width: 100%;
+  height: auto;
+  min-height: 48px;
+  line-height: 1.5em;
+  background-color: #323232;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: default; }
+.toast .toast-action {
+    color: #eeff41;
+    font-weight: 500;
+    margin-right: -25px;
+    margin-left: 3rem; }
+
+.toast.rounded {
+  border-radius: 24px
+}
+ @media only screen and (max-width: 600px) {
+    .toast {
+      width: 100%;
+      border-radius: 0; } } 
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body id="body">
+	<div class="site-navbar bg-white py-2">
+
+      <div class="search-wrap">
+        <div class="container">
+          <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+          <form action="#" method="post">
+            <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
+          </form>  
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <div class="site-logo">
+              <!--<a href="index.html" class="js-logo-clone">ShopMax</a>-->
+			  <img src="/static/images/logo.png" href="#">
+            </div>
+          </div>
+          <div class="main-nav d-none d-lg-block">
+            <nav class="site-navigation text-right text-md-center" role="navigation">
+              <ul class="site-menu js-clone-nav d-none d-lg-block">
+                
+				<li class="has-children active">
+                  <a href="/shop/">Shop</a>
+				  
+                  <ul class="dropdown">
+                    <li><a href="/shop/pottery">Pottery</a></li>
+                <!--    <li><a href="/shop/wooden">Wooden work</a></li>-->
+                    <li><a href="/shop/painting">Paintings</a></li>
+                    <li class="has-children">
+                      <a href="#">Textiles</a>
+                      <ul class="dropdown">
+                        <li><a href="/shop/tote-bags">Tote bags</a></li>
+                        
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                
+              <li><a>About Us</a>
+              </li>
+
+
+
+                
+                           
+                
+                
+                
+                {% if user.is_authenticated %}
+
+                    <li  class="has-children active"><a href="/login/">{{user.email}}</a>
+
+                      <ul class="dropdown">
+                    <li><a href="/order_history">My Orders</a></li>
+                    <li><a href="/profile">My Profile</a></li> 
+                    <li><a href="/change_password">Change Password</a></li>                 
+                    
+                    </ul>
+
+                    </li>
+                    <li><a href="/logout/">Logout</a></li>
+
+                {% else %}
+                    <li><a href="/login/">Login/Create Account</a></li>
+                {% endif %} 
+                <li>
+                <input style="padding-left:5px,border:2px solid black,border-radius:4px" id="pincode" placeholder="Pincode" onkeyup="pinmethod(event)" size="6"></input>
+              <img src="/static/images/pen.png" width=25px height=25px onclick="enable_pin()" align="middle">
+                </li>
+
+              </ul>
+            </nav>
+          </div>
+
+          <div class="icons">
+            <!--<a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>-->
+            <a href="#" class="icons-btn d-inline-block"><span class="icon-heart-o"></span></a>
+            {% if user.is_authenticated %}
+            <a href="http://127.0.0.1:8000/cart/" class="icons-btn d-inline-block bag">
+              <span class="icon-shopping-bag"></span>
+              {% block count %}
+              <span class="number">{{count}}</span>
+              {% endblock count %}
+            </a>
+            {% endif %}
+            <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span class="icon-menu"></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                <script>M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});</script>
+            {% elif message.tags == 'info'%}
+                <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+            {% elif message.tags == 'warning'%}
+                <script>M.toast({html: "{{message}}", classes: 'orange rounded', displayLength:10000});</script>
+            {% elif message.tags == 'error'%}
+                <script>M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});</script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+
+
+<script type="text/javascript">
+  var name = "pin_fl" + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      document.getElementById("pincode").value=c.substring(name.length, c.length);
+      document.getElementById("pincode").disabled=true;
+    }
+  }
+  //window.alert("khali");
+
+
+</script>
+    
+    {% block body %}
+    {% endblock %}
+    
+    <footer class="site-footer custom-border-top">
+      <div class="container">
+        <div class="row">
+          <!--<div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+            <h3 class="footer-heading mb-4">Promo</h3>
+            <a href="#" class="block-6">
+              <img src="static/images/about_1.jpg" alt="Image placeholder" class="img-fluid rounded mb-4">
+              <h3 class="font-weight-light  mb-0">Finding Your Perfect Shirts This Summer</h3>
+              <p>Promo from  July 15 &mdash; 25, 2019</p>
+            </a>
+          </div>
+          <div class="col-lg-5 ml-auto mb-5 mb-lg-0">-->
+          <div class="col-md-6 col-lg-6 mb-4 mb-lg-0">
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="footer-heading mb-4">Quick Links</h3>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <ul class="list-unstyled">
+                  <li><a href="#">Shop online</a></li>
+                  <li><a href="#">Shopping cart</a></li>
+                  <li><a href="#">Pottery</a></li>
+                  
+                </ul>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <ul class="list-unstyled">
+                  <li><a href="#">Paintings</a></li>
+                  <li><a href="#">Wooden Arts</a></li>
+                  <li><a href="#">Textile Art</a></li>
+                  
+                </ul>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <ul class="list-unstyled">
+                  <li><a href="#">Ideology</a></li>
+                  <li><a href="#">Future Vision</a></li>
+                  <li><a href="#">About Us</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6 col-lg-6">
+            <div class="block-5 mb-5">
+              <h3 class="footer-heading mb-4">Contact Info</h3>
+              <ul class="list-unstyled">
+                <li class="address">Sector 54, Gurgaon, Haryana, India, 122011</li>
+                <li class="phone"><a href="tel://">+918091430725</a></li>
+                <li class="email">gullykaart.cs@gmail.com</li>
+              </ul>
+            </div>
+
+            
+          </div>
+        </div>
+        
+      </div>
+    </footer>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+
+
+function pinmethod(event) {
+  // initialisation stuff here
+  var pin=document.getElementById("pincode");
+      if (event.keyCode === 13) {
+    
+   
+    pincode=parseInt(pin.value);
+    a="https://api.postalpincode.in/pincode/"+pincode;
+    document.cookie = "pin_fl" + "=" + pincode + ";" ;
+    //window.alert(a);pi
+    //location.href=a;
+    var settings = {
+           "async": true,
+           "crossDomain": true,
+           "url": a,
+           "method": "GET"
+         }
+         //window.alert(a);
+
+         $.ajax(settings).done(function (response) {
+           
+           //window.alert(response);
+           //window.alert("pincode not availabale");
+           if(response[0].Status=="Error")
+            {
+            //window.alert("pincode not availabale");
+            location.href="/invalid_pin";
+            }
+            if(response[0].Status=="Success")
+            {
+              for(i=0;i<response[0].PostOffice.length;i++)
+              {
+                //city_name=response[0].PostOffice[i].Name;
+                //city_name=city_name.toLowerCase();
+                city_district=response[0].PostOffice[i].District;
+                city_district=city_district.toLowerCase();
+                city_block=response[0].PostOffice[i].Block;
+                city_block=city_block.toLowerCase();
+
+
+
+                if(city_district.includes("delhi")||city_district.includes("gurgaon")|| city_block.includes("noida"))
+                {
+       //           window.alert("Success");
+                  document.getElementById("pincode").disabled=true;
+                  pincode_accessible=true;
+
+                  break;
+                }
+              }
+
+              if(i>=response[0].PostOffice.length)
+              {
+                window.alert("we dont deliver here");
+              }
+            }
+
+
+         });
+    }
+}
+
+
+function enable_pin(){
+document.getElementById("pincode").disabled=false;
+
+  // body...
+}
+/*      
+      
+      function show_messages(){
+        
+        window.alert("34");
+
+              
+              window.alert("12");
+              messages=html: "{{message}}";
+
+         for(message in messages){
+
+            if (message.tags == 'success'){
+                window.alert("succ");
+                var x= document.getElementById("snackbar");
+                document.getElementById("snackbar").innerHTML=message;
+                
+                msg=message;
+                window.alert(str(msg));
+                 x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); 
+            
+         }
+       }
+
+     // document.getElementById("snackbar").innerHTML=str(message);
+               
+}
+
+
+
+  */
+      
+
+    </script>
+</body>
+</html>

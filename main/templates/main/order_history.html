@@ -1,0 +1,98 @@
+{% extends 'main/base.html'%}
+{% block count %}
+    {% with count=cart_count %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock count%}
+{% block body %}
+  <style type="text/css">
+    .div_width {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+} 
+
+  </style>
+  <link rel="stylesheet" href="/static/css/openform.css"> 
+  <div class="site-wrap">
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="../index.html">Home</a> </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        
+          <div class="border p-3 p-lg-5 ">
+
+            {% if order_detail %}
+
+            {% for order in order_detail %}
+             
+         <div class="border p-3 p-lg-5 ">
+        
+          
+            {% if order.status != "Delivered" and order.status != "Cancelled" %}
+            <p style="font-weight: bold;">Order ID - {{order.order_id}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+          Expected Delivery by- {{order.deliver_date.date}}     &nbsp;&nbsp; Status- {{order.status}}    </p>        
+            <img src="{{order.product_id.picture1.url}}" height="70px" width="70px" >
+            {% else %}
+            <p style="font-weight: bold;" id="status">Order ID - {{order.order_id}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Status- {{order.status}}</p>
+            <img src="{{order.product_id.picture1.url}}" height="70px" width="70px" onload="display_buttons()">
+            {% endif %}
+            <script type="text/javascript">
+  
+
+            function display_buttons(){
+
+              
+              //window.alert("123");
+              document.getElementById('track').style.display = "none";
+              document.getElementById('cancel').style.display = "none";
+              document.getElementById('return').style.display = "none";
+                    }
+            </script>
+          
+
+          {{order.product_id.product_name}}<strong class="mx-2">x</strong>{{order.quantity}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    &#x20b9 {{order.price}}
+          <br><br>
+          
+          <a class="btn btn-primary " id="track" href="#">Track</a>
+          <a class="btn btn-primary " id="cancel" href="/cancel_order/{{order.order_detail_id}}">Cancel</a>
+          <a class="btn btn-primary " id="return"  href="#">Return</a>
+          
+
+            
+         </div>
+         <br>
+           {% endfor %}
+      
+         {% else %}
+
+         <p style="color: black; font-weight: bold; "> You have no Orders yet  </p> 
+         {% endif  %}
+       </div>
+     </div> <!--bada vaala-->
+        <!-- </form> -->
+      </div> <!--href + bigger box-->
+ 
+
+    
+  </div>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/main.js"></script>
+
+{%endblock%}
+

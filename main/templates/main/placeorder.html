@@ -1,0 +1,249 @@
+{% extends 'main/base.html'%}
+{% block count %}
+    {% with count=cart_count %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock count%}
+{% block body %}
+<style>
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+</style>
+  <link rel="stylesheet" href="/static/css/openform.css"> 
+  <div class="site-wrap">
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="../../">Home</a> <span class="mx-2 mb-0">/</span> <a href="../cart">Cart</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        
+        <div class="row">
+          <div class="col-md-6 mb-5 mb-md-0">
+
+       <div class="p-3 p-lg-5 border">
+                  
+          <p><strong class="text-black mb-3" style="font-weight: bold;"> Delivery Address</strong></p>
+          <br>
+             <p style="display: none;" id="add_id" >{{address.address_id}}</p>
+             <p class="text-black mb-3">{{address.house_no}}</p>
+             {% if address.building_name   %}
+             <p class="text-black mb-3"> {{address.building_name}} </p> 
+             {% endif %}
+             {% if address.landmark  %}
+             <p class="text-black mb-3">    {{address.landmark}} </p>  
+             {% endif %}
+             <p class="text-black mb-3">    {{address.city}}, {{address.state}}, {{address.country}} - {{address.pincode}} </p>  
+       
+             <p class="text-black mb-3">    {{address.phone}} </p> 
+              
+        </div>
+      
+          
+
+      
+
+    
+        
+          </div>
+          <div class="col-md-6">
+
+            
+            
+            <div class="row mb-5">
+              <div class="col-md-12">
+                <h2 class="h3 mb-3 text-black">Your Order</h2>
+                <div class="p-3 p-lg-5 border">
+                  <table class="table site-block-order-table mb-5">
+                    <thead>
+                      <th>Product</th>
+                      <th>Total</th>
+                    </thead>
+                    <tbody>
+
+                      {% for item in items %}
+                      <tr>
+                        <td>{{item.product_id.product_description}}<strong class="mx-2">x</strong>{{item.quantity}}</td>
+                        <td>{{item.price}}</td>
+                      </tr>
+                      {% endfor %}
+                      
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+                        <td class="text-black">{{total}}</td>
+                      </tr>
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+                        <td class="text-black font-weight-bold"><strong>{{total}}</strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="border p-3 mb-3">
+                      
+                       
+                      <p><strong class="text-black mb-3" style="font-weight: bold;">Select your payment method</strong></p>
+                      <input type="radio" id="cod" name="payment"  onchange=cod() checked="true" >Cash on Delivery<br>
+                      <input type="radio" id="paytm" name="payment" onchange=showPaytmimage()>Paytm<br> 
+
+                      <input type="radio" id="paypal" name="payment" onchange=showPaypalimage()>Paypal<br>
+                      
+                      <div  id="mypic" style="display: none;">
+                        <a>hello</a>
+                      </div>
+                    </div>
+                <div class="p-3 mb-3" style="display: none" id="paytm-image">
+                      
+                       
+                      <img src="/static/images/paytm_code.jpeg" height="150px" width="150px" align="middle">
+                    </div>
+                <div class="p-3 mb-3" style="display: none" id="paypal-image">
+                      
+                       
+                      <img src="/static/images/paytm_code.jpeg" height="150px" width="150px" align="middle">
+                    </div>
+
+                  
+                 
+
+                  <div class="form-group">
+                 <br>
+                 <br>
+                    <button class="btn btn-primary btn-lg btn-block" onclick="sendAddress()">Place Order</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+      <div class="row mb-5">
+              <div class="col-md-12">
+                <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+                <div class="p-3 p-lg-5 border">
+                  
+                  <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                  <div class="input-group w-75">
+                    <input type="text" class="form-control" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary btn-sm px-4" type="button" id="button-addon2">Apply</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- </form> -->
+      </div>
+    </div>
+
+    
+  </div>
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/main.js"></script>
+  <script type="text/javascript">
+ 
+
+  function sendAddress(id){
+   
+    address_id=document.getElementById("add_id").textContent;
+    a="";
+    a=a+"../thankyou/"+address_id;
+    if(document.getElementById("cod").checked)
+    {
+        a=a+"/"+"cod";
+         location.href = a;
+       
+    }
+    else
+    {
+      if(document.getElementById("paypal").checked)
+      {
+          a=a+"/"+"paypal";
+           location.href = a;
+      }
+      else
+      {
+        if(document.getElementById("paytm").checked)
+        {
+          a=a+"/"+"paytm";
+           location.href = a;
+        } 
+        else
+          window.alert("Select a payment option")
+      }
+    }
+  
+
+  }
+
+  function showPaytmimage(){
+    document.getElementById('paytm-image').style="display:block";
+    document.getElementById('paypal-image').style="display:none";
+
+    // body...
+  }
+  function showPaypalimage(){
+    document.getElementById('paypal-image').style="display:block";
+    document.getElementById('paytm-image').style="display:none";
+
+    // body...
+  }
+
+function cod(){
+    document.getElementById('paypal-image').style="display:none";
+    document.getElementById('paytm-image').style="display:none";
+
+    // body...
+  }
+  </script>
+
+    
+  </body>
+</html>
+
+  {%endblock%}

@@ -1,0 +1,281 @@
+{% extends 'main/base.html'%}
+{% block count %}
+    {% with count=cart_count %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock count%}
+{% block body %}
+
+<style type="text/css">
+.column {
+  float: left;
+  width: 25%;
+  padding: 10px;
+}
+
+/* Style the images inside the grid */
+.column img {
+  opacity: 0.8; 
+  cursor: pointer; 
+}
+
+.column img:hover {
+  opacity: 1;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The expanding image container */
+
+/* Expanding image text */
+#imgtext {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: white;
+  font-size: 20px;
+}
+
+/* Closable button inside the expanded image */
+.closebtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: white;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+</style>
+  <div class="site-wrap">
+  
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="../../">Home</a> <span class="mx-2 mb-0">/</span> <a href="../">Shop</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{product.product_name}}</strong></div>
+        </div>
+      </div>
+    </div>  
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">  <!--new code-->
+            <div class="container pic">
+                  
+                  <img id="expandedImg" style="width:100%" src="{{product.picture1.url}}" >
+                  
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+            <div class="row slideshow-container1">
+            
+            {% if product.picture1 %}
+            <div class="column pics">
+              <img src="{{product.picture1.url}}" alt="Nature" style="width:100%" onclick="myFunction(this);">
+            </div>
+            {% endif %}
+
+            {% if product.picture2 %}
+            <div class="column pics">
+              <img src="{{product.picture2.url}}" alt="Snow" style="width:100%" onclick="myFunction(this);">
+            </div>
+            {% endif %}
+            {% if product.picture3 %}
+            <div class="column pics">
+              <img src="{{product.picture3.url}}" alt="Mountains" style="width:100%" onclick="myFunction(this);">
+            </div>
+            {% endif %}
+            {% if product.picture4 %}
+            <div class="column pics">
+              <img src="{{product.picture4.url}}" alt="Lights" style="width:100%" onclick="myFunction(this);">
+            </div>
+            {% endif %}
+
+            
+            
+          </div>
+          
+
+
+          </div>
+
+
+          <div class="col-md-6">
+            <h2 class="text-black">{{product.product_name}}</h2>
+            <p>{{product.product_description}}</p>
+
+            
+            <p><strong class="text-primary h4">&#x20b9 {{price}}</strong></p>
+       <!--     <div class="mb-1 d-flex">
+              <label for="option-sm" class="d-flex mr-3 mb-3">
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-sm" name="shop-sizes"></span> <span class="d-inline-block text-black">Small</span>
+              </label>
+              <label for="option-md" class="d-flex mr-3 mb-3">
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-md" name="shop-sizes"></span> <span class="d-inline-block text-black">Medium</span>
+              </label>
+              <label for="option-lg" class="d-flex mr-3 mb-3">
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-lg" name="shop-sizes"></span> <span class="d-inline-block text-black">Large</span>
+              </label>
+              <label for="option-xl" class="d-flex mr-3 mb-3">
+                <span class="d-inline-block mr-2" style="top:-2px; position: relative;"><input type="radio" id="option-xl" name="shop-sizes"></span> <span class="d-inline-block text-black"> Extra Large</span>
+              </label>
+            </div>-->
+           
+              {% if out_of_stock == True %}
+
+            <div class="mb-5">
+              <div class="input-group mb-3" style="max-width: 120px;">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary js-btn-minus" type="button"  onclick="SubtractValue()" disabled="true">&minus;</button>
+              </div>
+              <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="quantity" name="quantity">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary js-btn-plus" type="button" disabled="true" onclick="AddValue()">&plus;</button>
+              </div>
+            </div>
+
+            </div>
+            <!--<p><a href="cart/fgf/hjh/hjhj/mkm/" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To Cart</a></p>-->
+            <button type="button" class="btn btn-primary" href="" onclick="AddCart()" id="SendToBag" disabled="true">Add to Cart</button>
+            <p style="color: red"><strong>Out of Stock</strong></p>
+
+              {% else %}
+
+                <div class="mb-5">
+              <div class="input-group mb-3" style="max-width: 120px;">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary js-btn-minus" type="button"  onclick="SubtractValue()">&minus;</button>
+              </div>
+              <input type="text" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" id="quantity" name="quantity">
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary js-btn-plus" type="button"  onclick="AddValue()">&plus;</button>
+              </div>
+            </div>
+
+            </div>
+            <!--<p><a href="cart/fgf/hjh/hjhj/mkm/" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To Cart</a></p>-->
+            <button type="button" class="btn btn-primary" href="" onclick="AddCart()" id="SendToBag">Add to Cart</button>
+            {% if product_id == '1' %}
+            <a type="button" class="btn btn-primary" href="https://apps.8thwall.com/ynnjzusg/ARCam1/" >Experience it live</a>
+            {% endif%}
+            <p id="message"></p>
+
+
+              {% endif %}
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+
+  </div>
+
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/main.js"></script>
+
+<script>
+  
+  
+  function AddValue()
+  { 
+    units_in_stock = {{product.units_in_stock}};
+    if (units_in_stock >= (parseInt(document.getElementById("quantity").value)))
+    {
+    
+      document.getElementById("quantity").value=parseInt(document.getElementById("quantity").value)+1;
+      document.getElementById("message").innerHTML=""
+    }
+    
+    //else if ((units_in_stock+1) = (parseInt(document.getElementById("quantity").value)+1))
+
+    if ((units_in_stock+1) == (parseInt(document.getElementById("quantity").value)))
+    {
+
+      a=document.getElementById("quantity").value + " quantity not in stock";
+      document.getElementById("message").innerHTML=a;
+      document.getElementById("SendToBag").disabled=true;
+    }
+
+  }
+
+  function SubtractValue()
+  { 
+    units_in_stock={{product.units_in_stock}};
+   // window.alert(units_in_stock);
+
+    if(parseInt(document.getElementById("quantity").value)>1  )
+      {
+        document.getElementById("quantity").value=parseInt(document.getElementById("quantity").value)-1;
+        if (units_in_stock >= parseInt(document.getElementById("quantity").value))
+          document.getElementById("SendToBag").disabled=false;
+        document.getElementById("message").innerHTML="";
+      }
+    else if (parseInt(document.getElementById("quantity").value)<=1) 
+      document.getElementById("message").innerHTML="Quantity cannot be less than 1";
+
+    
+  }
+  function AddCart()
+  {
+    //window.alert("Hello");
+    //window.location = "index.html"
+    quantity=parseInt(document.getElementById("quantity").value);
+    a=""
+    a=quantity+"";
+    location.href=a;
+    //window.alert(document.getElementById("SendToBag").href);
+
+
+  }
+
+  function myFunction(imgs) {
+  var expandImg = document.getElementById("expandedImg");
+  //var imgText = document.getElementById("imgtext");
+  expandImg.src = imgs.src;
+  //imgText.innerHTML = imgs.alt;
+  //expandImg.parentElement.style.display = "block";
+}
+var slideIndex = 1;
+function plusSlides(n){
+showSlides(slideIndex += n);
+}
+  // body...
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("pics"); 
+  var currentpic=document.getElementsByClassName("pic"); 
+  if (n > slides.length) {n = 1;slideIndex=1;}    
+  if (n < 1) {n = slides.length; slideIndex=slides.length;}  
+  for (i = 1; i <= slides.length; i++) { 
+
+   //i=4
+      if(n==i)
+      {
+      currentpic[0].getElementsByTagName("img")[0].src=slides[i-1].getElementsByTagName("img")[0].src;
+    break;}
+  }
+
+  
+}
+
+</script>
+ {%endblock%} 

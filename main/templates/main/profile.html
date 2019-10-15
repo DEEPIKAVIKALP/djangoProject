@@ -1,0 +1,91 @@
+{% extends 'main/base.html'%}
+{% block count %}
+    {% with count=cart_count %}
+        {{ block.super }}
+    {% endwith%}
+{% endblock count%}
+{% block body %}
+<style type="text/css">
+
+table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+tr:hover {background-color: #ddd;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #ee4266;
+  color: white;
+}	
+
+</style>
+<div class="site-wrap">
+    <div class="custom-border-bottom py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0">
+            <a href="../">Home</a> 
+            <span class="mx-2 mb-0">/</span> 
+            <strong class="text-black">Shop</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+ <div class="site-section">
+      <div class="container">
+        
+        <div class="row">
+          <div class="col-md-6 mb-5 mb-md-0">
+
+      <div class="p-3 p-lg-5 border">
+<table>
+<tr>
+<th colspan="2">Primary Information</th>
+</tr>
+  <tr id="myRow">
+    <td>First Name</td>
+    <td>{{user_profile.first_name}}</td>
+    
+  </tr>
+  <tr>
+  	<td>Last Name</td>
+  	<td>{{user_profile.last_name}}</td>
+  </tr>
+
+  
+  <tr>
+  	<td>Mobile Number</td>
+  	<td>{{user_profile.phone}}</td>
+  </tr>
+  
+  <tr>
+  	<td>E-mail id</td>
+  	<td>{{user_profile.user.email}}</td>
+  </tr>
+
+</table>
+</br>
+<a class="btn btn-primary btn-lg" style="background-color: #ee4266" href="/change_profile" >EDIT</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+ {%endblock%}
